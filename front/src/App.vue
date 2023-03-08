@@ -1,5 +1,7 @@
 <script>
+import { ref } from "vue";
 import api from "./api/api";
+import 'primeicons/primeicons.css';
 
 export default {
   name: "app",
@@ -7,10 +9,11 @@ export default {
     return {
       task: {},
       inputValue: "",
-      checked: false
+      modalIsOpen: ref(false),
+      modalId: ""
     };
   },
-  created() {
+  mounted() {
     this.getTask();
   },
   methods: {
@@ -21,7 +24,6 @@ export default {
       }).catch((error) => {
         console.log(error);
       });
-      ;
     },
     deleteTask(id) {
       api.delete(`/tasks/${id}`).then(() => {
@@ -32,25 +34,27 @@ export default {
       location.reload()
     },
     postTask(inputValue) {
-      api.post("/tasks", { "content": inputValue, "checked": this.checked }).then(() => {
+      api.post("/tasks", { "content": inputValue }).then(() => {
         console.log('Tarefa cadastrada com sucesso')
       }).catch((error) => {
         console.log(error);
       });
       location.reload()
     },
-    // checkedTask(id) {
-    //   this.checked = !this.checked;
-    //   api.patch(`/tasks/${id}`, { "checked": this.checked }).then(() => {
-    //     console.log('Status da tarefa atualizada com sucesso')
-    //   }).catch((error) => {
-    //     console.log(error);
-    //   });
-    // }
+    openModal(id) {
+      this.modalIsOpen = !this.modalIsOpen
+      this.modalId = id;
+    },
+    updateTask(inputValue) {
+      api.put(`/tasks/${this.modalId}`, { "content": inputValue }).then(() => {
+        console.log('Tarefa atualizada com sucesso')
+      }).catch((error) => {
+        console.log(error);
+      });
+      location.reload()
+    },
   }
 }
-
-
 </script>
 
 <template>
@@ -58,19 +62,30 @@ export default {
     <h1>Lista de Tarefas</h1>
   </header>
   <section>
+    <div class="hidden" :class="{ modal: modalIsOpen }">
+      <div class="outside" v-on:click="openModal()"></div>
+      <div class="content-modal">
+        <input type="text" autofocus placeholder="Digite a nova tarefa" v-model="inputValue"
+          v-on:keyup.enter="updateTask(inputValue)" />
+        <button v-on:click="updateTask(inputValue)">Atualizar</button>
+      </div>
+    </div>
+
     <div class="todo-container">
       <div class="input-container">
         <input type="text" autofocus placeholder="Digite uma tarefa" v-model="inputValue"
           v-on:keyup.enter="postTask(inputValue)" />
         <button v-on:click="postTask(inputValue)">Adicionar</button>
       </div>
-      <div class="tasks-list">
-        <div class="task-container" v-for="item in task">
+      <div class="tasks-container">
+        <div class="task-list" v-for="item in task">
           <div>
-            <!-- <input type="checkbox" v-on:click="checkedTask(item.id)" /> -->
             <span>{{ item.content }}</span>
           </div>
           <div>
+            <button class="edit-button" v-on:click="openModal(item.id)">
+              <i class="pi pi-pencil"></i>
+            </button>
             <button class="delete-button" v-on:click="deleteTask(item.id)">✖</button>
           </div>
 
@@ -134,9 +149,10 @@ section {
   border: none;
   background-color: #4554b1;
   color: white;
+  cursor: pointer;
 }
 
-.tasks-list {
+.tasks-container {
   width: 76%;
   display: flex;
   flex-direction: column;
@@ -145,7 +161,7 @@ section {
   padding-left: 40px;
 }
 
-.task-container {
+.task-list {
   display: flex;
   align-items: center;
   height: 4vh;
@@ -154,6 +170,11 @@ section {
   justify-content: space-between;
 }
 
+.edit-button {
+  margin-right: 10px;
+  border: none;
+  background-color: none;
+}
 
 .delete-button {
   width: 20px;
@@ -161,6 +182,55 @@ section {
   color: white;
   background-color: red;
   border-radius: 100px;
+  cursor: pointer;
+}
+
+
+.hidden {
+  display: none;
+}
+
+.modal {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.outside {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.content-modal {
+  display: flex;
+  width: 50vw;
+  height: 5vh;
+  margin-top: 20vh;
+  padding: 2px;
+  z-index: 0;
+}
+
+.content-modal input {
+  width: 90%;
+  border: solid 2px #4554b1;
+  padding: 10px;
+  border-radius: 5px;
+
+}
+
+.content-modal button {
+  width: 20%;
+  height: 45px;
+  margin-left: 10px;
+  border-radius: 3px;
+  border: none;
+  background-color: #4554b1;
+  color: white;
   cursor: pointer;
 }
 </style>
