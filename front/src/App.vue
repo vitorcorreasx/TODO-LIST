@@ -25,33 +25,34 @@ export default {
         console.log(error);
       });
     },
-    deleteTask(id) {
-      api.delete(`/tasks/${id}`).then(() => {
+    async deleteTask(id) {
+      await api.delete(`/tasks/${id}`).then(() => {
         console.log('Tarefa deletada com sucesso')
       }).catch((error) => {
         console.log(error);
       });
-      location.reload()
+      this.getTask()
     },
-    postTask(inputValue) {
-      api.post("/tasks", { "content": inputValue }).then(() => {
+    async postTask(inputValue) {
+      await api.post("/tasks", { "content": inputValue }).then(() => {
         console.log('Tarefa cadastrada com sucesso')
       }).catch((error) => {
         console.log(error);
       });
-      location.reload()
+      this.getTask()
     },
     openModal(id) {
       this.modalIsOpen = !this.modalIsOpen
       this.modalId = id;
     },
-    updateTask(inputValue) {
-      api.put(`/tasks/${this.modalId}`, { "content": inputValue }).then(() => {
+    async updateTask(inputValue) {
+      await api.put(`/tasks/${this.modalId}`, { "content": inputValue }).then(() => {
         console.log('Tarefa atualizada com sucesso')
       }).catch((error) => {
         console.log(error);
       });
-      location.reload()
+      this.getTask()
+      this.openModal()
     },
   }
 }
