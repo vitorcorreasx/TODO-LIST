@@ -34,26 +34,34 @@ export default {
       this.getTask()
     },
     async postTask(inputValue) {
-      await api.post("/tasks", { "content": inputValue }).then(() => {
-        console.log('Tarefa cadastrada com sucesso')
-      }).catch((error) => {
-        console.log(error);
-      });
-      this.getTask()
+      if (inputValue == "" || inputValue == " ") {
+        alert("Campo vazio")
+      } else {
+        await api.post("/tasks", { "content": inputValue }).then(() => {
+          console.log('Tarefa cadastrada com sucesso')
+        }).catch((error) => {
+          console.log(error);
+        });
+        this.getTask()
+      }
     },
     openModal(id) {
       this.modalIsOpen = !this.modalIsOpen
       this.modalId = id;
     },
     async updateTask(inputValue) {
-      await api.put(`/tasks/${this.modalId}`, { "content": inputValue }).then(() => {
-        console.log('Tarefa atualizada com sucesso')
-      }).catch((error) => {
-        console.log(error);
-      });
-      this.getTask()
-      this.openModal()
-    },
+      if (inputValue == "" || inputValue == " ") {
+        alert("Campo vazio")
+      } else {
+        await api.put(`/tasks/${this.modalId}`, { "content": inputValue }).then(() => {
+          console.log('Tarefa atualizada com sucesso')
+        }).catch((error) => {
+          console.log(error);
+        });
+        this.getTask()
+        this.openModal()
+      }
+    }
   }
 }
 </script>
