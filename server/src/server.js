@@ -3,16 +3,16 @@ const TaskController = require('./models/TaskController')
 
 const typeDefs = `
   type Task {
-    id: Int
-    content: String
+    id: Int!
+    content: String!
   }
   type Query {
     allTasks: [Task]
   }
   type Mutation {
-    createTask(content: String): Task
-    deleteTask(id: Int): Task
-    updateTask(id: Int, content: String): Task
+    createTask(content: String!): Task
+    deleteTask(id: Int!): Task
+    updateTask(id: Int!, content: String!): Task
   }
 `;
 const resolvers = {
