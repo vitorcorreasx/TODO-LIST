@@ -1,5 +1,5 @@
 {
-  "name": "training",
+  "name": "todo-list",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -9,16 +9,20 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@quasar/extras": "^1.15.11",
     "primeicons": "^6.0.1",
+    "quasar": "^2.11.7",
     "villus": "^2.2.1",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
+    "@quasar/vite-plugin": "^1.3.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vitejs/plugin-vue-jsx": "^3.0.0",
     "eslint": "^8.22.0",
     "eslint-plugin-vue": "^9.3.0",
+    "sass": "^1.32.12",
     "vite": "^4.0.0"
   }
 }
