@@ -18,7 +18,7 @@ const typeDefs = `
 const resolvers = {
   Query: {
     allTasks: async () => {
-      const res = await TaskController.index()
+      const res = await TaskController.get()
       return res
     }
   },

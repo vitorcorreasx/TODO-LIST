@@ -1,7 +1,7 @@
 const knex = require('../database/index');
 
 module.exports = {
-  async index() {
+  async get() {
     const results = await knex('tasks')
     return results
   },
