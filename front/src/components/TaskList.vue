@@ -8,7 +8,6 @@ import Modal from './Modal.vue'
 const inputAdd = ref(null)
 const modalIsOpen = ref(false)
 const modalId = ref(null)
-// const inputUpdate = ref(null)
 
 const OpenModal = (id) => {
   modalIsOpen.value = !modalIsOpen.value
