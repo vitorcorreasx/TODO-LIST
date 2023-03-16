@@ -1,6 +1,6 @@
 const createTask = `
   mutation 
-    createTask ($text: String) {
+    createTask ($text: String!) {
       createTask(content: $text) {
         content
     }
@@ -8,7 +8,7 @@ const createTask = `
 `
 const deleteTask = `
   mutation
-    deleteTask($id: Int) {
+    deleteTask($id: Int!) {
       deleteTask(id: $id){
         id
       }
@@ -16,7 +16,7 @@ const deleteTask = `
 `
 const updateTask = `
   mutation
-    updateTask($id: Int, $content: String) {
+    updateTask($id: Int!, $content: String!) {
       updateTask(id: $id, content: $content){
         id
         content
