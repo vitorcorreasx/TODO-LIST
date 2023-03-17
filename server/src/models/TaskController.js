@@ -6,34 +6,24 @@ module.exports = {
     return results
   },
   async create(req){
-    try{
-      const { content } = req;
-      await knex('tasks').insert({content})
+      const {content} = req;
+      const checkItem = await knex('tasks').where({content})
+      const [checkContent] = checkItem.map(item => item.content)
 
-    }catch(error){
-      console.log(error)
-    }
+      if(content === checkContent)  {
+        return
+      }
+      await knex('tasks').insert({content})
   },
   async update(req){
-    try{
       const content  = req.content;
       const id = req.id;
 
       await knex('tasks').where({id}).update({content})
-  
-    }
-    catch(error){
-      console.log(error)
-    }
   },
   async delete(req){
-    try{
       const { id } = req;
 
       await knex('tasks').where({ id }).del()
     }
-    catch(error){
-      console.log(error)
-    }
-  }
 }
