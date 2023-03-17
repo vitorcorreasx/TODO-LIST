@@ -2,20 +2,21 @@
 import 'primeicons/primeicons.css';
 import { useQuery, useMutation } from 'villus';
 import { ref } from 'vue'
-import { createTask, deleteTask, updateTask, getTasks } from '../helpers/api';
-import Modal from './Modal.vue'
+import { createTask, deleteTask, updateTask, getTasks } from '../graphql';
 
-const inputAdd = ref(null)
+const inputAdd = ref('')
 const modalIsOpen = ref(false)
 const modalId = ref(null)
+const inputUpdate = ref('')
 
-const OpenModal = (id) => {
+const openModal = (id, value) => {
   modalIsOpen.value = !modalIsOpen.value
   modalId.value = id
+  inputUpdate.value = value
 }
-
 const addTask = (value) => {
-  if (value == null || value == " ") {
+  const newValue = value.trim()
+  if (newValue == '') {
     alert('Campo vazio')
     return
   }
@@ -56,22 +57,37 @@ const { data } = useQuery({
 </script>
 
 <template>
-  <Modal :inputUpdate="inputUpdate" :modalId="modalId" :isOpen="modalIsOpen" @toggleModal="OpenModal" @upTask="upTask" />
-  <div class="container">
-    <div class="todo-container">
-      <div class="input-container">
-        <input type="text" autofocus placeholder="Digite uma tarefa" v-model="inputAdd"
+  <div class="container shadow-2 rounded-borders">
+    <div class="column q-mt-lg">
+      <div class="row q-pl-xl items-end">
+        <q-input class="col-8" autofocus label="Digite uma tarefa" v-model="inputAdd"
           v-on:keyup.enter="addTask(inputAdd)" />
-        <button @click="addTask(inputAdd)">Adicionar</button>
+        <q-btn class="q-ml-xl col-2" color="primary" label="Adicionar" @click="addTask(inputAdd)"/>
       </div>
-      <div class="tasks-container" v-if="data">
-        <div class="task-list" v-for="task in data.allTasks">
-          <span>{{ task.content }}</span>
-          <div>
-            <button class="edit-button" @click="OpenModal(task.id)">
-              <i class="pi pi-pencil"></i>
-            </button>
-            <button class="delete-button" @click="delTask(task.id)">✖</button>
+      <div class="q-pa-xl" v-if="data">
+        <div class="row q-mb-md" v-for="task in data.allTasks">
+          <span class="task">{{ task.content }}</span>
+        <div>
+            <q-btn class="q-mr-md q-ml-xl" label="Editar" color="primary" @click="openModal(task.id, task.content)"/>
+            <q-dialog v-model="modalIsOpen" persistent>
+              
+              <q-card style="min-width: 350px">
+                <q-card-section class="row justify-center">
+                  <div class="text-h6">Editar Tarefa</div>
+                </q-card-section>
+
+                <q-card-section class="q-pt-xs">
+                  <q-input dense v-model="inputUpdate" autofocus @keyup.enter="upTask(inputUpdate, modalId)" />
+                </q-card-section>
+
+                <q-card-actions align="right" class="text-primary">
+                  <q-btn flat label="Cancel" v-close-popup />
+                  <q-btn flat label="Editar" v-close-popup @click="upTask(inputUpdate, modalId)" />
+                </q-card-actions>
+
+              </q-card>
+            </q-dialog>
+            <q-btn color="red" label="delete" @click="delTask(task.id)" />
           </div>
         </div>
       </div>
@@ -80,67 +96,16 @@ const { data } = useQuery({
 </template>
 
 <style scoped>
-.container {
-  display: flex;
-  box-shadow: 3px 3px 7px 1px rgba(0, 0, 0, 0.3);
-  padding-top: 50px;
-  width: 50vw;
-  height: 80vh;
-  justify-content: center;
-  overflow: scroll;
+.container{
+  width: 56rem;
+  height: 50rem;
+  overflow-y: scroll;
+  
 }
-
-.input-container input {
-  width: 60%;
-  height: 3vh;
-  border: none;
-  border-bottom: solid 1px #4554b1;
-}
-
-.input-container button {
-  width: 20%;
-  height: 3vh;
-  margin-left: 10px;
-  border-radius: 3px;
-  border: none;
-  background-color: #4554b1;
-  color: white;
-  cursor: pointer;
-}
-
-.todo-container {
-  width: 80%;
-}
-
-.task-list {
-  display: flex;
-  align-items: center;
-  height: 4vh;
-  border-bottom: solid 1px #4554b1;
-  margin-bottom: 30px;
-  justify-content: space-between;
-  margin-top: 50px;
-
-}
-
-.task-list span {
-  width: 90%;
+.task{
+  width: 35rem;
   overflow-wrap: break-word;
+  border-bottom: solid 1px #d1d1d1;
 }
 
-.edit-button {
-  margin-right: 10px;
-  border: none;
-  background-color: #fff;
-  cursor: pointer;
-}
-
-.delete-button {
-  width: 20px;
-  border: none;
-  color: white;
-  background-color: red;
-  border-radius: 100px;
-  cursor: pointer;
-}
 </style>
