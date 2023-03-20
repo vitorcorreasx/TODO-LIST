@@ -57,17 +57,17 @@ const { data } = useQuery({
 
 <template>
   <div class="container shadow-2 rounded-borders">
-    <div class="column q-mt-lg">
+    <div class="q-mt-lg">
       <div class="row q-pl-xl items-end">
         <q-input class="col-8" autofocus label="Digite uma tarefa" v-model="inputAdd"
           v-on:keyup.enter="addTask(inputAdd)" />
-        <q-btn class="q-ml-xl col-2" color="primary" label="Adicionar" @click="addTask(inputAdd)"/>
+        <q-btn class="q-ml-md col-2" color="primary" label="Adicionar" @click="addTask(inputAdd)"/>
       </div>
       <div class="q-pa-xl" v-if="data">
         <div class="row q-mb-md" v-for="task in data.allTasks">
           <span class="task">{{ task.content }}</span>
         <div>
-            <q-btn class="q-mr-md q-ml-xl" label="Editar" color="primary" @click="openModal(task.id, task.content)"/>
+            <q-btn class="q-mr-md q-ml-md" label="Editar" color="primary" @click="openModal(task.id, task.content)"/>
             <q-dialog v-model="modalIsOpen" persistent>
               
               <q-card style="min-width: 350px">
@@ -102,7 +102,7 @@ const { data } = useQuery({
   
 }
 .task{
-  width: 35rem;
+  width: 35.5rem;
   overflow-wrap: break-word;
   border-bottom: solid 1px #d1d1d1;
 }
