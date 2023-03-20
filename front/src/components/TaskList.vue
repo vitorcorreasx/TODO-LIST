@@ -1,5 +1,4 @@
 <script setup>
-import 'primeicons/primeicons.css';
 import { useQuery, useMutation } from 'villus';
 import { ref } from 'vue'
 import { createTask, deleteTask, updateTask, getTasks } from '../graphql';
@@ -81,8 +80,8 @@ const { data } = useQuery({
                 </q-card-section>
 
                 <q-card-actions align="right" class="text-primary">
-                  <q-btn flat label="Cancel" v-close-popup />
-                  <q-btn flat label="Editar" v-close-popup @click="upTask(inputUpdate, modalId)" />
+                  <q-btn flat label="Cancelar" v-close-popup />
+                  <q-btn flat label="Confirmar" v-close-popup @click="upTask(inputUpdate, modalId)" />
                 </q-card-actions>
 
               </q-card>

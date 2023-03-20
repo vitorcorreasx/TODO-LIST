@@ -1,5 +1,6 @@
 const {ApolloServer} = require('apollo-server') 
 const TaskController = require('./models/TaskController')
+require('dotenv').config()
 
 const typeDefs = `
   type Task {
@@ -45,6 +46,6 @@ const server = new ApolloServer({
   resolvers,
 });
 
-server.listen({port: 64001}).then(({url}) =>{
+server.listen({port: process.env.PORT}).then(({url}) =>{
   console.log(url)
 })
