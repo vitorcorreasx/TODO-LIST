@@ -15,8 +15,7 @@ const openModal = (id, value) => {
 }
 const addTask = (value) => {
   const newValue = value.trim()
-  if (newValue == '') {
-    alert('Campo vazio')
+  if (newValue == "" ) {
     return
   }
   const { execute } = useMutation(createTask, {
@@ -36,8 +35,8 @@ const delTask = (id) => {
   })
 }
 const upTask = (value, id) => {
-  if (value == "" || value == " ") {
-    alert('Campo vazio')
+  const newValue = value.trim()
+  if (newValue == "" ) {
     return
   }
   const { execute } = useMutation(updateTask, {
@@ -59,8 +58,13 @@ const { data } = useQuery({
   <div class="container shadow-2 rounded-borders">
     <div class="q-mt-lg">
       <div class="row q-pl-xl items-end">
-        <q-input class="col-8" autofocus label="Digite uma tarefa" v-model="inputAdd"
-          v-on:keyup.enter="addTask(inputAdd)" />
+        <q-input
+            class="col-8"
+            autofocus
+            label="Digite uma tarefa" 
+            v-model="inputAdd"
+            v-on:keyup.enter="addTask(inputAdd)"
+        />
         <q-btn class="q-ml-md col-2" color="primary" label="Adicionar" @click="addTask(inputAdd)"/>
       </div>
       <div class="q-pa-xl" v-if="data">
@@ -81,7 +85,7 @@ const { data } = useQuery({
 
                 <q-card-actions align="right" class="text-primary">
                   <q-btn flat label="Cancelar" v-close-popup />
-                  <q-btn flat label="Confirmar" v-close-popup @click="upTask(inputUpdate, modalId)" />
+                  <q-btn flat label="Confirmar" @click="upTask(inputUpdate, modalId)" />
                 </q-card-actions>
 
               </q-card>
