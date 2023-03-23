@@ -24,11 +24,14 @@ const updateTask = `
     }
 `
 const getTasks = `
-  query {
-    allTasks {      
-        id
-        content
+  query ($userId: Int!) {
+    allTasks(user_id: $userId){
+      id
+      content
+      user {
+        id_user
     }
   }
+}
 `
 export {createTask, deleteTask, updateTask, getTasks}
