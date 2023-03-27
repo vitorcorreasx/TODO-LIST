@@ -1,14 +1,14 @@
 const login =
  `query ($username: String!, $password: String!){
     loginUser (username: $username, password: $password){
-      id_user
+      user_id
     }
 }
 `
 const createTask = `
   mutation 
-    createTask($user_id: Int!, $content: String!){
-      createTask(user_id: $user_id, content: $content) {
+    createTask($userId: Int!, $content: String!){
+      createTask(user_id: $userId content: $content) {
         content
   }
 }
@@ -36,7 +36,7 @@ const getTasks = `
       id
       content
       user {
-        id_user
+        user_id
     }
   }
 }

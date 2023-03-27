@@ -19,7 +19,7 @@ const onSubmit = async (username, password) => {
   }).then((data) => {
     if(data.data.value.loginUser){
       store.$patch({
-        userId: data.data.value.loginUser.id_user
+        userId: data.data.value.loginUser.user_id
       }) 
       router.push({path: 'list'})
     }

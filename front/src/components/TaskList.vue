@@ -7,7 +7,7 @@ import { useUserStore } from '../store'
 const Iduser = useUserStore();
 
 const variables = ref({
-  userId: Iduser.loggedId
+  userId: Iduser.loggedId,
 })
 
 const inputAdd = ref('')
@@ -29,9 +29,9 @@ const addTask = (value) => {
     refetchTags: ['query'],
   })
   execute({
-    text: value,
-    id_user: variables
-  })
+    content: value,
+    userId: Iduser.loggedId
+  }),
   inputAdd.value = ""
 }
 const delTask = (id) => {
