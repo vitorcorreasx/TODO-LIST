@@ -2,6 +2,13 @@
 import { useQuery, useMutation } from 'villus';
 import { ref } from 'vue'
 import { createTask, deleteTask, updateTask, getTasks } from '../graphql';
+import { useUserStore } from '../store'
+
+const Iduser = useUserStore();
+
+const variables = ref({
+  userId: Iduser.loggedId
+})
 
 const inputAdd = ref('')
 const modalIsOpen = ref(false)
@@ -22,7 +29,8 @@ const addTask = (value) => {
     refetchTags: ['query'],
   })
   execute({
-    text: value
+    text: value,
+    id_user: variables
   })
   inputAdd.value = ""
 }
@@ -50,8 +58,10 @@ const upTask = (value, id) => {
 }
 const { data } = useQuery({
   query: getTasks,
+  variables,
   tags: ['query']
 });
+
 </script>
 
 <template>
@@ -93,7 +103,7 @@ const { data } = useQuery({
             <q-btn color="red" label="delete" @click="delTask(task.id)" />
           </div>
         </div>
-      </div>
+      </div>  
     </div>
   </div>
 </template>

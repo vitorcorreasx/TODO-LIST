@@ -1,10 +1,17 @@
+const login =
+ `query ($username: String!, $password: String!){
+    loginUser (username: $username, password: $password){
+      id_user
+    }
+}
+`
 const createTask = `
   mutation 
-    createTask ($text: String!) {
-      createTask(content: $text) {
+    createTask($user_id: Int!, $content: String!){
+      createTask(user_id: $user_id, content: $content) {
         content
-    }
   }
+}
 `
 const deleteTask = `
   mutation
@@ -34,4 +41,4 @@ const getTasks = `
   }
 }
 `
-export {createTask, deleteTask, updateTask, getTasks}
+export {login ,createTask, deleteTask, updateTask, getTasks}
