@@ -6,9 +6,19 @@ export const useUserStore = defineStore('userId', {
       userId: null
     }
   },
+  actions:{
+    reset(){
+      this.userId = null
+    }
+  },
   getters:{
     loggedId(){
       return this.userId
     }
-  }
+  },
+  persist: {
+    enabled: true
+  },
+  
+  
 })

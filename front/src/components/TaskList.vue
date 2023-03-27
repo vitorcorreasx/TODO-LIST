@@ -4,10 +4,10 @@ import { ref } from 'vue'
 import { createTask, deleteTask, updateTask, getTasks } from '../graphql';
 import { useUserStore } from '../store'
 
-const Iduser = useUserStore();
+const iduser = useUserStore();
 
 const variables = ref({
-  userId: Iduser.loggedId,
+  user_id: iduser.loggedId
 })
 
 const inputAdd = ref('')
@@ -30,7 +30,7 @@ const addTask = (value) => {
   })
   execute({
     content: value,
-    userId: Iduser.loggedId
+    user_id: iduser.loggedId
   }),
   inputAdd.value = ""
 }

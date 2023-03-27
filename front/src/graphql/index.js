@@ -7,8 +7,8 @@ const login =
 `
 const createTask = `
   mutation 
-    createTask($userId: Int!, $content: String!){
-      createTask(user_id: $userId content: $content) {
+    createTask($user_id: Int!, $content: String!){
+      createTask(user_id: $user_id content: $content) {
         content
   }
 }
@@ -31,8 +31,8 @@ const updateTask = `
     }
 `
 const getTasks = `
-  query ($userId: Int!) {
-    allTasks(user_id: $userId){
+  query ($user_id: Int!) {
+    allTasks(user_id: $user_id){
       id
       content
       user {
