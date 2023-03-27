@@ -1,24 +1,18 @@
-const { ValidationError } = require('apollo-server');
-const knex = require('../database/index');
-
 module.exports = {
-  async create(req){
+  async create(req, ctx){
       const username = req.username;
       const password = req.password;
       
-      await knex('users').insert({
+      await ctx('users').insert({
         username: username,
         password: password
       })
   },
-  async login(req){
-    const username = req.username;
-    const password = req.password;
-
-    const [validUser] = await knex('users').where({
-      username: username,
-      password: password
-    })
-    console.log(validUser)
+  async login(req, ctx){
+    const [validUser] = await ctx('users').where({
+      username: req.username,
+      password: req.password
+    }).select('id_user')
+    return validUser
   },
 }

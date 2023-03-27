@@ -1,34 +1,33 @@
-const knex = require('../database/index');
-
 module.exports = {
-  async get(req) {
+  async get(req, ctx) {
     const user = req.user_id
-    const results = await knex('tasks').where('user_id', user)
+    const results = await ctx('tasks').where('user_id', user)
     return results
 },
-  async create(req){
-      const {content} = req;
-      // fazer create por user id
-      const checkItem = await knex('tasks').where({content})
-      const [checkContent] = checkItem.map(item => item.content)
+  async create(req, ctx){
+       const content = req.content;
+       const user_id = req.user_id;
+       const [checkItem] = await ctx('tasks').where({content: content, user_id: user_id})
 
-      if(content === checkContent)  {
-        return
-      }
-      await knex('tasks').insert({
-        content: content,
-        user_id: user_id
-      })
+       console.log(checkItem)
+
+       if(!checkItem)  {
+         await ctx('tasks').insert({
+           content: content,
+           user_id: user_id
+         })
+       }
+     
   },
-  async update(req){
+  async update(req, ctx){
       const content  = req.content;
       const id = req.id;
 
-      await knex('tasks').where({id}).update({content})
+      await ctx('tasks').where({id}).update({content})
   },
-  async delete(req){
+  async delete(req, ctx){
       const { id } = req;
 
-      await knex('tasks').where({ id }).del()
+      await ctx('tasks').where({ id }).del()
     }
 }
