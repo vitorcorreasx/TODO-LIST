@@ -5,6 +5,14 @@ const login =
     }
 }
 `
+const register = `
+  mutation 
+    createUser($username: String!, $password: String!){
+      createUser (username: $username, password: $password){
+        user_id
+    }
+}
+`
 const createTask = `
   mutation 
     createTask($user_id: Int!, $content: String!){
@@ -41,4 +49,4 @@ const getTasks = `
   }
 }
 `
-export {login ,createTask, deleteTask, updateTask, getTasks}
+export {login, register, createTask, deleteTask, updateTask, getTasks}
