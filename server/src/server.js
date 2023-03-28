@@ -6,7 +6,7 @@ require('dotenv').config()
 
 const typeDefs = `
  type User {
-   id_user: Int!
+   user_id: Int!
    username: String!
    password: String!
  }
@@ -38,13 +38,9 @@ const resolvers = {
   
   Mutation: {
     async createUser(_, args, {database}){
-      await UserController.create({
-        username: args.username,
-        password: args.password
-      }, database)
+      return await UserController.create(args, database)
     },
     async createTask(_, args, {database}){
-      console.log(args)
       return await TaskController.create(args, database)
     },
     async deleteTask(_, {id}, {database}){
