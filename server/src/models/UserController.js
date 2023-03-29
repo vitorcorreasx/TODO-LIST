@@ -1,22 +1,22 @@
 module.exports = {
-  async create(req, ctx){
+  async create(req, knex){
       const username = req.username;
       const password = req.password;
-      const [checkUser] = await ctx('users').where({username: username})
+      const [checkUser] = await knex('users').where({username: username})
 
       if(!checkUser){
-        await ctx('users').insert({
+        await knex('users').insert({
           username: username,
           password: password
         })
         return this.login({
           username: username,
           password: password
-        }, ctx)
+        }, knex)
       }  
   },
-  async login(req, ctx){
-    const [validUser] = await ctx('users').where({
+  async login(req, knex){
+    const [validUser] = await knex('users').where({
       username: req.username,
       password: req.password
     }).select('user_id')

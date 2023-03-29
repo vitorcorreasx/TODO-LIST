@@ -1,29 +1,28 @@
 module.exports = {
-  async get(req, ctx) {
-    const user = req.user_id
-    const results = await ctx('tasks').where('user_id', user)
-    return results
+  async get(req, knex) {
+    const userId = req.user_id
+    return await knex('tasks').where('user_id', userId)
 },
-  async create(req, ctx){
+  async create(req, knex){
        const content = req.content;
-       const user_id = req.user_id;
-       const [checkItem] = await ctx('tasks').where({content: content, user_id: user_id})
+       const userId = req.user_id;
+       const [checkItem] = await knex('tasks').where({content: content, user_id: userId})
        if(!checkItem)  {
-         await ctx('tasks').insert({
+         await knex('tasks').insert({
            content: content,
-           user_id: user_id
+           user_id: userId
          })
        }
   },
-  async update(req, ctx){
+  async update(req, knex){
       const content  = req.content;
       const id = req.id;
 
-      await ctx('tasks').where({id}).update({content})
+      await knex('tasks').where({id}).update({content})
   },
-  async delete(req, ctx){
+  async delete(req, knex){
       const { id } = req;
 
-      await ctx('tasks').where({ id }).del()
+      await knex('tasks').where({ id }).del()
     }
 }
