@@ -5,7 +5,7 @@ import { useUserStore } from '../store'
 
 const tokenUser = useUserStore()
 
-const loggout = () => {
+const logout = () => {
   tokenUser.$reset()
   router.push({path: '/'})
 }
@@ -15,16 +15,15 @@ const loggout = () => {
   <q-layout class="container flex flex-center">
     <q-header elevated class="header flex text-white">
       <div class="header-content flex justify-between items-center">
-      <q-btn flat icon="menu">
-         <q-menu anchor="bottom middle" self="top middle">
-           <q-item clickable @click="loggout">
-             <q-item-section>Sair</q-item-section>
-           </q-item>
-         </q-menu>
-      </q-btn>
-      <span>Lista de Tarefas</span>
-    </div>
-    
+        <q-btn flat icon="menu">
+          <q-menu anchor="bottom middle" self="top middle">
+            <q-item clickable @click="logout">
+              <q-item-section>Sair</q-item-section>
+            </q-item>
+          </q-menu>
+        </q-btn>
+        <span>Lista de Tarefas</span>
+      </div>
     </q-header>
     <TaskList />
   </q-layout>

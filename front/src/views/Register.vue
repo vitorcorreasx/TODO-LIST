@@ -31,7 +31,7 @@ const signUp = (username, password) => {
         if(data.createUser == null){
           $q.notify({
             type: 'negative',
-            message: 'Usuário ja existe!',
+            message: 'Usuário já existe!',
             position: 'top-right'
           })
           return
@@ -51,7 +51,7 @@ const signUp = (username, password) => {
   } else {
     $q.notify({
       type: 'negative',
-      message: 'Campos vázios!',
+      message: 'Campos vazios!',
       position: 'top-right'
     })
   }
@@ -61,23 +61,23 @@ const signUp = (username, password) => {
 <template>
   <q-layout class="column flex-center">
     <div class="container">
-    <q-form class="column" @submit="signUp(username, password)">
-      <q-input :rules="[ val => val.length >= 5 || 'Por favor, minimo 5 caracteres']" v-model="username" label="Usuario"/>
-      <q-input v-model="password" label="Senha" :rules="[ val => val.length >= 5 || 'Por favor, minimo 5 caracteres']" :type="type">
-        <template v-slot:append>
-          <q-icon
-            :name="visible"
-            class="cursor-pointer"
-            @click="showPassword"
-          />
-        </template>
-      </q-input>
-      <q-btn class="q-mt-md q-mb-md" type="submit" color="primary" label="Cadastrar"/>
-    </q-form>
-    <span>Ja possui conta?
-      <q-btn  @click="router.push({path: '/'})" no-caps flat class="text-primary">Entre aqui!</q-btn>
-    </span>
-  </div>
+      <q-form class="column" @submit="signUp(username, password)">
+        <q-input :rules="[ val => val.length >= 5 || 'Por favor, minimo 5 caracteres']" v-model="username" label="Usuario"/>
+        <q-input v-model="password" label="Senha" :rules="[ val => val.length >= 5 || 'Por favor, mínimo 5 caractéres']" :type="type">
+          <template v-slot:append>
+            <q-icon
+              :name="visible"
+              class="cursor-pointer"
+              @click="showPassword"
+            />
+          </template>
+        </q-input>
+        <q-btn class="q-mt-md q-mb-md" type="submit" color="primary" label="Cadastrar"/>
+      </q-form>
+      <span>Ja possui conta?
+        <q-btn  @click="router.push({path: '/'})" no-caps flat class="text-primary">Entre aqui!</q-btn>
+      </span>
+    </div>
   </q-layout>
 
 </template>

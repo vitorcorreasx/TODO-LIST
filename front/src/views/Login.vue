@@ -30,7 +30,7 @@ const signIn = async (username, password) => {
     if(data.value === undefined){
       $q.notify({
         type: 'negative',
-        message: 'Campos vázios!',
+        message: 'Campos vazios!',
         position: 'top-right'
       })
       return
@@ -43,7 +43,7 @@ const signIn = async (username, password) => {
     }else {
       $q.notify({
         type: 'negative',
-        message: 'Usuario ou senha inválida!',
+        message: 'Credenciais inválidas!',
         position: 'top-right'
       })
     }
