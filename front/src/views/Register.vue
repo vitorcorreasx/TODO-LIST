@@ -11,6 +11,13 @@ const username = ref('')
 const password = ref('')
 const isPwd = ref(true)
 
+const visible = computed(() => isPwd.value ? 'visibility_off' : 'visibility')
+const type = computed(() => isPwd.value ? 'password' : 'text')
+
+const showPassword = () => {
+  isPwd.value = !isPwd.value
+}
+
 const signUp = (username, password) => {
   const newUsername = username.trim()
   const newPassword = password.trim()
@@ -21,8 +28,8 @@ const signUp = (username, password) => {
     execute({
       username: newUsername,
       password: newPassword
-    }).then((data) => {
-        if(data.data.createUser == null){
+    }).then(({data}) => {
+        if(data.createUser == null){
           $q.notify({
             type: 'negative',
             message: 'Usuário ja existe!',
@@ -30,9 +37,9 @@ const signUp = (username, password) => {
           })
           return
         }
-        if(data.data.createUser.user_id){
+        if(data.createUser.user_id){
           store.$patch({
-              userId: data.data.createUser.user_id
+              userId: data.createUser.user_id
             })
           router.push('list')
           $q.notify({
@@ -57,12 +64,12 @@ const signUp = (username, password) => {
     <div class="container">
     <q-form class="column" @submit="signUp(username, password)">
       <q-input v-model="username" label="Usuario"/>
-      <q-input v-model="password" label="Senha" :type="isPwd ? 'password' : 'text'">
+      <q-input v-model="password" label="Senha" :type="type">
         <template v-slot:append>
           <q-icon
-            :name="isPwd ? 'visibility_off' : 'visibility'"
+            :name="visible"
             class="cursor-pointer"
-            @click="isPwd = !isPwd"
+            @click="showPassword"
           />
         </template>
       </q-input>

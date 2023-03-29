@@ -1,13 +1,13 @@
 <script setup>
 import { useQuery, useMutation } from 'villus';
-import { ref } from 'vue'
+import { ref, reactive} from 'vue'
 import { createTask, deleteTask, updateTask, getTasks } from '../graphql';
 import { useUserStore } from '../store'
 
-const iduser = useUserStore();
+const tokenUser = useUserStore();
 
-const variables = ref({
-  user_id: iduser.loggedId
+const variables = reactive({
+  user_id: tokenUser.loggedId
 })
 
 const inputAdd = ref('')
@@ -30,7 +30,7 @@ const addTask = (value) => {
   })
   execute({
     content: value,
-    user_id: iduser.loggedId
+    user_id: tokenUser.loggedId
   }),
   inputAdd.value = ""
 }
