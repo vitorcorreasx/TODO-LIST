@@ -1,10 +1,10 @@
 <script setup>
-import { ref, computed, watch} from 'vue'
+import { ref, computed } from 'vue'
 import { useQuery } from 'villus';
 import router from '../routes';
 import { login } from '../graphql/index'
 import { useUserStore } from '../store'
-import { colors, useQuasar } from 'quasar';
+import { useQuasar } from 'quasar';
 
 const $q = useQuasar()
 const username = ref(null)
@@ -35,7 +35,7 @@ const signIn = async (username, password) => {
       })
       return
     }
-    if(datavalue.loginUser){
+    if(data.value.loginUser){
       store.$patch({
         userId: data.value.loginUser.user_id
       })

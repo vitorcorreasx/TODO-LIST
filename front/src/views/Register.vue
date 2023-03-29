@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed} from 'vue'
 import { useMutation } from 'villus';
 import router from '../routes';
 import { register } from '../graphql/index'
@@ -23,8 +23,7 @@ const signUp = (username, password) => {
   const newPassword = password.trim()
   const store = useUserStore()
   const { execute } = useMutation(register)
-  
-  if(newUsername || newPassword != ''){
+  if(newUsername && newPassword !== ''){
     execute({
       username: newUsername,
       password: newPassword
@@ -63,8 +62,8 @@ const signUp = (username, password) => {
   <q-layout class="column flex-center">
     <div class="container">
     <q-form class="column" @submit="signUp(username, password)">
-      <q-input v-model="username" label="Usuario"/>
-      <q-input v-model="password" label="Senha" :type="type">
+      <q-input :rules="[ val => val.length >= 5 || 'Por favor, minimo 5 caracteres']" v-model="username" label="Usuario"/>
+      <q-input v-model="password" label="Senha" :rules="[ val => val.length >= 5 || 'Por favor, minimo 5 caracteres']" :type="type">
         <template v-slot:append>
           <q-icon
             :name="visible"
