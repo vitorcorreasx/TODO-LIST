@@ -1,27 +1,26 @@
-const knex = require('../database/index');
-
 module.exports = {
-  async get() {
-    const results = await knex('tasks')
-    return results
+  async get(req, knex) {
+    const userId = req.user_id
+    return await knex('tasks').where('user_id', userId)
+},
+  async create(req, knex){
+       const content = req.content;
+       const userId = req.user_id;
+       const [checkItem] = await knex('tasks').where({content: content, user_id: userId})
+       if(!checkItem)  {
+         await knex('tasks').insert({
+           content: content,
+           user_id: userId
+         })
+       }
   },
-  async create(req){
-      const {content} = req;
-      const checkItem = await knex('tasks').where({content})
-      const [checkContent] = checkItem.map(item => item.content)
-
-      if(content === checkContent)  {
-        return
-      }
-      await knex('tasks').insert({content})
-  },
-  async update(req){
+  async update(req, knex){
       const content  = req.content;
       const id = req.id;
 
       await knex('tasks').where({id}).update({content})
   },
-  async delete(req){
+  async delete(req, knex){
       const { id } = req;
 
       await knex('tasks').where({ id }).del()

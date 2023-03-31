@@ -1,42 +1,57 @@
 const {ApolloServer} = require('apollo-server') 
-const TaskController = require('./models/TaskController')
+const database = require('./database/index');
+const TaskController = require('./models/TaskController');
+const UserController = require('./models/UserController');
 require('dotenv').config()
 
 const typeDefs = `
+ type User {
+   user_id: Int!
+   username: String!
+   password: String!
+ }
   type Task {
     id: Int!
     content: String!
+    user: [User!]
   }
   type Query {
-    allTasks: [Task]
+    loginUser(username: String!, password: String!): User
+    allTasks(user_id: Int!): [Task]
   }
   type Mutation {
-    createTask(content: String!): Task
+    createUser(username: String!, password: String!): User
+    createTask(user_id: Int!, content: String!): Task
     deleteTask(id: Int!): Task
     updateTask(id: Int!, content: String!): Task
-  }
-`;
+  }`
+
 const resolvers = {
   Query: {
-    allTasks: async () => {
-      const res = await TaskController.get()
-      return res
+    async loginUser(_, args, {database}) {
+     return await UserController.login(args, database)
+    },
+    async allTasks(_, args, {database}) {
+      return await TaskController.get(args, database)
     }
   },
   
   Mutation: {
-    async createTask(_, {content}){
-      await TaskController.create({ content })
+    async createUser(_, args, {database}){
+      return await UserController.create(args, database)
     },
-    async deleteTask(_, {id}){
-      await TaskController.delete({ id })
+    async createTask(_, args, {database}){
+      return await TaskController.create(args, database)
+    },
+    async deleteTask(_, {id}, {database}){
+      await TaskController.delete({ id }, database)
 		},
-    async updateTask(_, args){
+    async updateTask(_, args, {database}){
       const item = {
         id: args.id,
         content: args.content
       }
-      await TaskController.update(item)
+      await TaskController.update(item, database)
     }
   }
 };
@@ -44,6 +59,9 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context:  () => {
+   return {database}
+  }
 });
 
 server.listen({port: process.env.PORT}).then(({url}) =>{
